@@ -1,5 +1,5 @@
-// Saves options to chrome.storage
-function save_options() {
+// Saves options to browser.storage
+async function save_options() {
 	// ["sponsor", "selfpromo", "exclusive_access", "interaction", "poi_highlight", "intro", "outro", "preview", "filler", "chapter", "music_offtopic"]
   
 	var opt_plugin = document.getElementById('opt_plugin').checked;
@@ -22,41 +22,43 @@ function save_options() {
 	}
 	selected_cats = JSON.stringify(selected_cats);
 	
-  chrome.storage.sync.set({
-    opt_plugin: opt_plugin,
-    opt_notifications: opt_notifications,
-	selected_cats: selected_cats,
-	notif_time: notif_time
-  }, function() {
-    // Update status to let user know options were saved.
-    var status = document.getElementById('status');
-    status.textContent = 'Saved! Please reload the site.';
+	await browser.storage.sync.set({
+		opt_plugin: opt_plugin,
+		opt_notifications: opt_notifications,
+		selected_cats: selected_cats,
+		notif_time: notif_time
+	});
+
+	// Update status to let user know options were saved.
+	var status = document.getElementById('status');
+	status.textContent = 'Saved! Please reload the site.';
 	status.style.opacity ="1";
-    setTimeout(function() {
-      status.textContent = '';
-	  status.style.opacity = "0";
-    }, 7000);
-  });
+	setTimeout(function() {
+		status.textContent = '';
+		status.style.opacity = "0";
+	}, 7000);
 }
 
-function restore_options() {
-	var manifestData = chrome.runtime.getManifest();
+async function restore_options() {
+	var manifestData = await browser.runtime.getManifest();
 	console.log(manifestData.version);
 	document.getElementById('ver_num').innerText = manifestData.version;
-  chrome.storage.sync.get({
-    opt_plugin: true,
-    opt_notifications: true,
-	selected_cats: '["sponsor"]',
-	notif_time: 4
-  }, function(items) {
-	  console.log("items.notif_time"+items.notif_time);
-		var opt_plugin = document.getElementById('opt_plugin');
-		var opt_notifications = document.getElementById('opt_notifications');
-		var notif_time = document.getElementById('notif_time');
-		opt_plugin.checked = items.opt_plugin;
-		opt_notifications.checked = items.opt_notifications;
-		notif_time.value = items.notif_time;
 	
+	const items = await browser.storage.sync.get({
+		opt_plugin: true,
+		opt_notifications: true,
+		selected_cats: '["sponsor"]',
+		notif_time: 4
+	});
+	
+	console.log("items.notif_time"+items.notif_time);
+	var opt_plugin = document.getElementById('opt_plugin');
+	var opt_notifications = document.getElementById('opt_notifications');
+	var notif_time = document.getElementById('notif_time');
+	opt_plugin.checked = items.opt_plugin;
+	opt_notifications.checked = items.opt_notifications;
+	notif_time.value = items.notif_time;
+
 	try {
 		var obj = JSON.parse(items.selected_cats);
 	} catch (ex) {
@@ -74,8 +76,6 @@ function restore_options() {
 	if(!opt_notifications.checked){
 		showHideDivs("notif_info", "none");
 	}
-	
-  });
 }
 
 document.getElementById('opt_plugin').addEventListener('change', (event) => {
