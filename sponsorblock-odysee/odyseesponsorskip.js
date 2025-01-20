@@ -3,16 +3,18 @@
  * https://ajay.app/
  * https://github.com/Glowman554/yt-block
  */
-chrome.storage.sync.get({
-	opt_plugin: true,
-	opt_notifications: true,
-	selected_cats: '["sponsor"]',
-	notif_time: 4
-}, function (items) {
+(async () => {
+	const items = await browser.storage.sync.get({
+		opt_plugin: true,
+		opt_notifications: true,
+		selected_cats: '["sponsor"]',
+		notif_time: 4
+	});
+	
 	if (items.opt_plugin) {
 		init([items.opt_notifications, items.selected_cats, items.notif_time]);
 	}
-});
+})();
 
 function init(options) {
 	var isNotifications = options[0];
