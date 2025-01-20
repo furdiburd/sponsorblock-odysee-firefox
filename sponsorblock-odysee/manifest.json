@@ -1,10 +1,10 @@
 {
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "sponsorblock-odysee@example.com"
+			"id": "sponsorblock-odysee-firefox@example.com"
 		}
 	},
-	"name": "SponsorBlock for Odysee",
+	"name": "SponsorBlock for Odysee FF",
 	"version": "1.2.1",
 	"description": "Skip sponsored segments on Odysee videos imported from YouTube. Very basic plugin - only load and skip sponsored segments.",
 	"manifest_version": 3,
