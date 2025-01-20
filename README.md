@@ -5,4 +5,4 @@ This plugin works only on videos imported (sync) from YouTube. The plugin uses S
 
 This is a fork of the original "sponsorblock-odysee" ported to firefox desktop and mobile + soon to safari (if i can finaly test it on that).
 
-Install from Firefox Web Store: https://addons.mozilla.org
+Install from Firefox Web Store: https://addons.mozilla.org/hu/firefox/addon/odysee-sponsor-skipper/
